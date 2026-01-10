@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int t[301][11];
+    int solve(vector<int>& jd,int idx,int n,int d){
+         // base case 
+         if(d == 1){
+            int maxjd = jd[idx];
+            for(int i=idx;i<n;i++){
+                maxjd = max(maxjd,jd[i]);
+            }
+         return t[idx][d] = maxjd;   
+         }
+         if(t[idx][d] != -1)
+            return t[idx][d];
+
+
+         int maxjd = jd[idx];
+         int result = INT_MAX;
+
+        for(int i= idx;i<=n-d;i++){
+            maxjd = max(maxjd,jd[i]);
+
+            int temp = maxjd + solve(jd,i+1,n,d-1);
+
+            result = min(temp,result);
+        } 
+        return t[idx][d] = result;
+    }
+    int minDifficulty(vector<int>& jd, int d) {
+        int n = jd.size();
+
+        if(n< d) 
+           return -1;
+        memset(t,-1,sizeof(t));
+
+    return solve(jd,0,n,d);         
+    }
+};
