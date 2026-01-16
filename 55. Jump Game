@@ -1,0 +1,64 @@
+class Solution {
+public:
+    int dp[10001];
+    bool solve(vector<int>& nums,int idx,int n){
+          if(idx == n-1)
+            return true;
+          if(dp[idx] != -1)
+              return dp[idx];
+
+         for(int i=1;i<=nums[idx];i++){
+
+            if(solve(nums,idx+i,n))
+             return dp[idx] =  true;
+         }   
+    return dp[idx] = false;     
+    }
+    bool canJump(vector<int>& nums) {
+        int n = nums.size();
+        memset(dp,-1,sizeof(dp));
+        return solve(nums,0,n);
+        
+    }
+};
+Approch -2 bottom up
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        int n = nums.size();
+
+        vector<bool>dp(n);
+
+        dp[0] = true;
+
+        for(int i = 1;i<n;i++){
+
+            for(int j = i-1;j>=0;j--){
+                if(dp[j] && j + nums[j] >=i){
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+    return dp[n-1];    
+    }
+};
+Approach-3 
+smart trick
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        int n = nums.size();
+
+        int maxReachable = 0;
+
+        for(int i = 0;i<n;i++){
+            if(i>maxReachable)
+                return false;
+
+            maxReachable = max(maxReachable,i+nums[i]);    
+       
+        }
+    return true;    
+    }
+};
