@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int n; 
+    int m;
+    int t[101][101];
+
+    int counts (int ringidx,int i){
+        
+        int clkwise = abs(i-ringidx);
+        int antclkwise = abs(n-clkwise);
+
+        return min(clkwise,antclkwise);
+    }
+    int solve(int ringidx,string&ring,int keyidx,string& key){
+        if(keyidx == m)
+          return 0;
+        if(t[ringidx][keyidx] != -1)
+            return t[ringidx][keyidx];
+        int result = INT_MAX;
+
+        for(int i=0;i<n;i++){
+            if(ring[i] == key[keyidx]){
+                int totalsteps = counts(ringidx,i) + 1 + solve(i,ring,keyidx+1,key);
+                result = min(result,totalsteps);
+            }
+        } 
+    return t[ringidx][keyidx] = result;    
+    }
+    int findRotateSteps(string ring, string key) {
+        n = ring.length();
+        m = key.length();
+        memset(t,-1,sizeof(t));
+    return solve(0,ring,0,key);    
+        
+    }
+};
