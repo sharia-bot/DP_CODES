@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int t[101][101][601];
+    int N;
+    int solve(vector<pair<int,int>>& count,int m,int n,int i){
+          if(i == N || (m==0 && n ==0))
+               return 0;
+
+          if(t[m][n][i] != -1){
+            return t[m][n][i];
+          }     
+
+          int take = 0;
+          if(count[i].first<= m && count[i].second <= n){
+            take = 1 + solve(count,m-count[i].first,n-count[i].second,i+1);
+          }
+
+          int skip = solve(count,m,n,i+1);
+
+
+          return t[m][n][i] = max(take,skip);
+    }
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        N = strs.size();
+ 
+        memset(t,-1,sizeof(t));
+
+        vector<pair<int,int>> count(N);
+
+        for(int i=0;i<N;i++){
+            int one = 0;
+            int zero = 0;
+
+            for(char& ch: strs[i]){
+                if(ch == '0')
+                 zero++;
+                else
+                 one++; 
+            }
+            count[i] = {zero,one};
+        }
+
+    return solve(count,m,n,0);    
+    }
+};
