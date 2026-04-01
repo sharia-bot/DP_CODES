@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int n;
+    int t[200][20001];
+    bool solve(vector<int>&nums,int i,int x){
+         if(x == 0)
+           return true;
+
+         if(i>= n)
+            return false;
+         if(t[i][x] != -1)
+           return t[i][x];
+
+        bool take = false;
+
+        if(nums[i]<= x)
+          take = solve(nums,i+1,x-nums[i]);
+
+        bool skip = solve(nums,i+1,x);
+
+        return t[i][x] = take || skip;         
+    }
+    bool canPartition(vector<int>& nums) {
+         n = nums.size();
+         int sum  = accumulate(begin(nums),end(nums),0);
+
+         if(sum % 2 == 1)
+            return false;
+         memset(t,-1,sizeof(t));
+         
+         int x = sum/2;
+
+         return solve(nums,0,x);   
+        
+    }
+};
